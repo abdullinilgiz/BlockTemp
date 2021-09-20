@@ -10,36 +10,32 @@
 int main() {
 
 	string date = Today + "_kA=" + to_string(static_cast<int>(kA));
-	cout << kA << endl;
+	cout << "kA = " << kA << endl;
+
+    ofstream stream;
+    stream.open(date + "_Constants.txt" , ios::app);
+    OutPutParam(stream);
+    stream.close();
 
 	cout.precision(12);
-	/*{
-		TestRunner tr;
-		RUN_TEST(tr, TestExt);
-		//RUN_TEST(tr, TestInteraction);
-		RUN_TEST(tr, TestRandomTransmission);
-		RUN_TEST(tr, TestRotateVector);
-		RUN_TEST(tr, TestRandomDir);
-		RUN_TEST(tr, TestEasy);
-	}*/
+//	{
+//		TestRunner tr;
+//		RUN_TEST(tr, TestExt);
+//		RUN_TEST(tr, TestInteraction);
+//		RUN_TEST(tr, TestRandomTransmission);
+//		RUN_TEST(tr, TestRotateVector);
+//		RUN_TEST(tr, TestRandomDir);
+//		RUN_TEST(tr, TestEasy);
+//	}
 
 	// create a vector of coords
 	vector <Particle> particle_coords(Nmb_particles);
 
 	//put coords inside vector
-	for (int i = 0; i < Nside; ++i) {
-		for (int j = 0; j < Nside; ++j) {
-			for (int k = 0; k < Nside; ++k) {
-				particle_coords[i * Nside * Nside + j * Nside + k].x = Particle_radius + i * Particle_diam;
-				particle_coords[i * Nside * Nside + j * Nside + k].y = Particle_radius + j * Particle_diam;
-				particle_coords[i * Nside * Nside + j * Nside + k].z = Particle_radius + k * Particle_diam;
-			}
-		}
-	}
-	
+    FillVectorWithCoords(particle_coords);
 
 	//create matrix of distances
-	Particle r_v;
+	Particle r_v = { 0, 0, 0 };
 	vector<vector<Particle>> v_distances(Nmb_particles, vector<Particle>(Nmb_particles));
 	vector<vector<double>> distances(Nmb_particles, vector<double>(Nmb_particles));
 	for (int i = 0; i < Nmb_particles; ++i) {
@@ -51,27 +47,27 @@ int main() {
 			else {
 				//x summand
 				r_v.x = particle_coords[i].x - particle_coords[j].x;
-				if (r_v.x > HalfSideLength) {
-					r_v.x = particle_coords[i].x - particle_coords[j].x - SideLength;
+				if (r_v.x > XHalfSideLength) {
+					r_v.x = particle_coords[i].x - particle_coords[j].x - XSideLength;
 				}
-				if (r_v.x < -HalfSideLength) {
-					r_v.x = particle_coords[i].x - particle_coords[j].x + SideLength;
+				if (r_v.x < -XHalfSideLength) {
+					r_v.x = particle_coords[i].x - particle_coords[j].x + XSideLength;
 				}
 				//y summand
 				r_v.y = particle_coords[i].y - particle_coords[j].y;
-				if (r_v.y > HalfSideLength) {
-					r_v.y = particle_coords[i].y - particle_coords[j].y - SideLength;
+				if (r_v.y > YHalfSideLength) {
+					r_v.y = particle_coords[i].y - particle_coords[j].y - YSideLength;
 				}
-				if (r_v.y < -HalfSideLength) {
-					r_v.y = particle_coords[i].y - particle_coords[j].y + SideLength;
+				if (r_v.y < -YHalfSideLength) {
+					r_v.y = particle_coords[i].y - particle_coords[j].y + YSideLength;
 				}
 				//z summand 
 				r_v.z = particle_coords[i].z - particle_coords[j].z;
-				if (r_v.z > HalfSideLength) {
-					r_v.z = particle_coords[i].z - particle_coords[j].z - SideLength;
+				if (r_v.z > ZHalfSideLength) {
+					r_v.z = particle_coords[i].z - particle_coords[j].z - ZSideLength;
 				}
-				if (r_v.z < -HalfSideLength) {
-					r_v.z = particle_coords[i].z - particle_coords[j].z + SideLength;
+				if (r_v.z < -ZHalfSideLength) {
+					r_v.z = particle_coords[i].z - particle_coords[j].z + ZSideLength;
 				}
 			}
 			v_distances[i][j] = r_v;
@@ -118,9 +114,8 @@ int main() {
 		int apply_counter = 0;
 		double int_sys_nrg, ext_sys_nrg, easy_sys_nrg;
 			 
-		ofstream stream;
-		stream.open(date + "_" + marker + ".txt" , ios::app);
-		OutPutParam(stream);
+		ofstream zfc_fc;
+        zfc_fc.open(date + "_" + marker + ".txt" , ios::app);
 
 		int decreaser = 4;
 		int down_up = 2;
@@ -177,7 +172,7 @@ int main() {
 
 				for (int index1 = 0; index1 < Nstep / decreaser ; ++index1) {
 					for (int index2 = 0; index2 < Nstep; ++index2) {
-						bool marker = MKIteration(
+						bool flag = MKIteration(
 							Temper,
 							rg,
 							particles_easy_nrg,
@@ -192,7 +187,7 @@ int main() {
 							phi_max,
 							easy_axis_dir,
 							E_ext);
-						if (marker) {
+						if (flag) {
 							apply_counter++;
 						}
 					}
@@ -256,8 +251,8 @@ int main() {
 				if (decreaser == 1) {
 					sys_moment_avr = ParticleVectorAvr(sys_moment_vector);
 					moment_error = ParticleVectorStDiv(sys_moment_avr, sys_moment_vector);
-					stream << Temper << " " << sys_moment_avr << " " << sqrt(DotP(sys_moment_avr, sys_moment_avr));
-					stream << " " << moment_error << '\n';
+					zfc_fc << Temper << " " << sys_moment_avr << " " << sqrt(DotP(sys_moment_avr, sys_moment_avr));
+					zfc_fc << " " << moment_error << '\n';
 				}
 
 				cout << "total_apply_counter: " << total_apply_counter << '\n';
@@ -277,8 +272,9 @@ int main() {
 			decreaser = 1;
 
 			convergence.close();
+			delta_nrg.close();
 		}
-		stream.close();
+		zfc_fc.close();
 		marker = "FC";
 	}
 

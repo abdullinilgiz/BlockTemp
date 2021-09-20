@@ -10,16 +10,16 @@ double CalculateDipol_Dipol(
 	const int& index_2) 
 {
 	double energy = 0;
-	double mm; 
-	double mrmr3;
-	Particle r_v = {0,0,0};
 	double dis_r_v;
 
 	// abs r_v
 	dis_r_v = distances_matrix[index_1][index_2];
-	if (dis_r_v > HalfSideLength) {
+	if (dis_r_v > ShortestHalfSideLength) {
 		return energy;
 	}
+    double mm;
+    double mrmr3;
+    Particle r_v = {0,0,0};
 	// first summand
 	mm = DotP(moments[index_1], moments[index_2]);
 	//get distance from saved matrix

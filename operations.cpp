@@ -22,12 +22,11 @@ ostream& operator<< (ostream& os, const Particle& l) {
 }
 
 Particle ParticleVectorAvr(const vector<Particle>& input_vector) {
-	
 	Particle vector_avr = { 0,0,0 };
 	for (const auto& item : input_vector) {
 		vector_avr = vector_avr + item;
 	}
-	vector_avr = vector_avr / input_vector.size();
+	vector_avr = vector_avr / static_cast<double>(input_vector.size());
 
 	return vector_avr;
 }

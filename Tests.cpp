@@ -6,7 +6,7 @@
 #include "operations.h"
 
 void TestInteraction(){
-    int particles_number = 3;
+    int particles_number = 4;
 
     vector<Particle> moments(particles_number);
 
@@ -22,32 +22,50 @@ void TestInteraction(){
     moments[2].y = 1;
     moments[2].z = 2;
 
+    moments[3].x = 3;
+    moments[3].y = 2;
+    moments[3].z = 1;
+
+
     vector<vector<double>> matrix(particles_number, vector<double>(particles_number, 0));
     vector<vector<double>> distances(particles_number, vector<double>(particles_number, 0));
 
-    distances[0][1] = 1;
-    distances[1][0] = 1;
+    distances[0][1] = 2e-8;
+    distances[1][0] = 2e-8;
+    distances[0][2] = 2e-8;
+    distances[2][0] = 2e-8;
+    distances[0][3] = 2e-8;
+    distances[3][0] = 2e-8;
 
-    distances[0][2] = 1;
-    distances[2][0] = 1;
+    distances[1][2] = 2e-8;
+    distances[2][1] = 2e-8;
+    distances[1][3] = 2e-8;
+    distances[3][1] = 2e-8;
 
-    distances[2][1] = 1;
-    distances[1][2] = 1;
+    distances[3][2] = 2e-8;
+    distances[2][3] = 2e-8;
 
     vector<vector<Particle>> v_distances(particles_number, vector<Particle>(particles_number));
 
     v_distances[0][0] = {0, 0, 0};
     v_distances[1][1] = {0, 0, 0};
     v_distances[2][2] =  {0, 0, 0};
+    v_distances[3][3] =  {0, 0, 0};
 
     v_distances[0][1] = { 4, 1, 4 };
     v_distances[1][0] = v_distances[1][0];
-
     v_distances[2][0] = { 2, 3, 2 };
     v_distances[0][2] = v_distances[2][0];
+    v_distances[3][0] = { 2, 3, 2 };
+    v_distances[0][3] = v_distances[3][0];
 
     v_distances[1][2] = { 3, 2, 3 };
     v_distances[2][1] = v_distances[1][2];
+    v_distances[1][3] = { 3, 2, 3 };
+    v_distances[3][1] = v_distances[1][2];
+
+    v_distances[2][3] = { 3, 2, 3 };
+    v_distances[3][2] = v_distances[1][2];
 
     double int_sys_energy = IntSysEnergy(moments, matrix, distances, v_distances, 3);
     double sum_energy = 0;
@@ -56,7 +74,8 @@ void TestInteraction(){
         for (int j = i + 1; j < 3; ++j){
             one_inter = M0 / 4 / PI * (DotP(moments[i],moments[j]) / pow(distances[i][j],3)
                     - 3 * DotP(moments[i], v_distances[i][j]) * DotP(moments[j], v_distances[i][j]) / pow(distances[i][j],5));
-            ASSERT_EQUAL(one_inter, matrix[i][j]);
+
+            ASSERT_EQUAL(abs((one_inter - matrix[i][j]) / one_inter) < 1e-15, true);
             sum_energy += one_inter;
         }
     }
@@ -121,18 +140,19 @@ void TestEasy() {
 }
 void TestRotateVector() {
 	TRandomMersenne* Test = new TRandomMersenne(iSeed);
-	Particle vector = GetRandomDir(Test) * 1000;
+	Particle vector = GetRandomDir(Test) * 1;
 	Particle axis = GetRandomDir(Test);
 	const double d_phi = PI / 2;
 	Particle first = vector;
 	for (int i = 0; i < 8; ++i) {
 		RotateVector(vector, axis, d_phi);
 	}
-	first = first - vector;
 	double zero = 0;
-	ASSERT_EQUAL(first.x, zero);
-	ASSERT_EQUAL(first.y, zero);
-	ASSERT_EQUAL(first.z, zero);
+	ASSERT_EQUAL(first.x - vector.x < 1e-15, true);
+	ASSERT_EQUAL(first.y - vector.y < 1e-15, true);
+	ASSERT_EQUAL(first.z - vector.z < 1e-15, true);
+
+
 
 
 }
@@ -148,10 +168,10 @@ void TestRandomDir() {
     double third = DotP(th, th) - 1;
     double fourth = DotP(fo, fo) - 1;
     double zero = 0;
-	ASSERT_EQUAL(first, zero);
-	ASSERT_EQUAL(second, zero);
-	ASSERT_EQUAL(third, zero);
-	ASSERT_EQUAL(fourth, zero);
+	ASSERT_EQUAL(first < 1e-16, true);
+	ASSERT_EQUAL(second < 1e-16, true);
+	ASSERT_EQUAL(third < 1e-16, true);
+	ASSERT_EQUAL(fourth < 1e-16, true);
 }
 double Trans_rg(TRandomMersenne* rg){
     return rg->Random();
@@ -215,7 +235,9 @@ void OutPutParam(ostream& stream) {
     OUTPUT(stream, Nstep);
     OUTPUT(stream, Rcore);
     OUTPUT(stream, Tshell);
-    OUTPUT(stream, Nside);
+    OUTPUT(stream, Nside_X);
+    OUTPUT(stream, Nside_Y);
+    OUTPUT(stream, Nside_Z);
     OUTPUT(stream, iSeed);
     OUTPUT(stream, dMoment);
     OUTPUT(stream, kA);

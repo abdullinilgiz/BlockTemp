@@ -2,12 +2,28 @@
 #include "Moments.h"
 
 void FillVectorWithCoords(vector <Particle>& particle_coords){
-    for (int i = 0; i < Nside; ++i) {
-        for (int j = 0; j < Nside; ++j) {
-            for (int k = 0; k < Nside; ++k) {
-                particle_coords[i * Nside * Nside + j * Nside + k].x = Particle_radius + i * Particle_diam;
-                particle_coords[i * Nside * Nside + j * Nside + k].y = Particle_radius + j * Particle_diam;
-                particle_coords[i * Nside * Nside + j * Nside + k].z = Particle_radius + k * Particle_diam;
+    double dy_z;
+    double dx_y;
+    double dx_z;
+
+    for (int z = 0; z < Nside_Z; ++z) {
+        if (z % 2 == 1) {
+            dy_z = Particle_radius / sqrt(3);
+            dx_z = Particle_radius;
+        } else {
+            dx_z = 0;
+            dy_z = 0;
+        }
+        for (int y = 0; y < Nside_Y; ++y) {
+            if (y % 2 == 1) {
+                dx_y = -Particle_radius;
+            } else {
+                dx_y = 0;
+            }
+            for (int x = 0; x < Nside_X; ++x) {
+                particle_coords[z * Nside_X * Nside_Y + y * Nside_X + x].x = x * Xstep + dx_y + dx_z + Particle_radius;
+                particle_coords[z * Nside_X * Nside_Y + y * Nside_X + x].y = y * Ystep + dy_z + Particle_radius;
+                particle_coords[z * Nside_X * Nside_Y + y * Nside_X + x].z = z * Zstep + Particle_radius;
             }
         }
     }
