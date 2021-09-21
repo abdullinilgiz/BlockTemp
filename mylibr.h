@@ -28,9 +28,9 @@ struct Particle {
 
 double DotP(Particle l, Particle r);
 
-const string Today = "23.03.21";
+const string Today = "20.09.21_old";
 
-const int Nstep = 900; // should be divisible by 5 and 4
+const int Nstep = 800; // should be divisible by 5 and 4
 
 const double PI = 3.141592653589793;
 
@@ -38,9 +38,9 @@ const double kB = 1.3806503e-23;
 
 const double Rcore = 6e-9; // radius
 
-const double Tshell = 2e-9; // tolshina obolochki
+const double Tshell = 5e-9; // tolshina obolochki
 
-const int Nside = 11; // number of particles per cube side
+const int Nside = 13; // number of particles per cube side
 
 const int iSeed = 13; // for randomc
 
@@ -49,15 +49,15 @@ const double dMoment = 3e-19; //dipol moment
 const double M0 = 1.2566370614e-6; 
 
 // const Particle E_ext = { 0, 0, 8000 };
-const double kA = 8000;
+const double kA = 30000;
 const double Vol = 4.0 / 3.0 * PI * static_cast<double>(pow(Rcore, 3));
 
 const double SideLength = Nside * (2 * (Tshell + Rcore));
 const double HalfSideLength = SideLength / 2;
 
-const int Tmax = 220;
-const int Tmin = 20;
-const int DeltaT = 20;
+const int Tmax = 400;
+const int Tmin = 150;
+const int DeltaT = 25;
 //const double kBT = T * kB;
 
 const double Particle_diam = 2 * (Tshell + Rcore); // find particle diameter

@@ -12,6 +12,10 @@ int main() {
 	string date = Today + "_kA=" + to_string(static_cast<int>(kA));
 	cout << kA << endl;
 
+    ofstream param;
+    param.open(date + "_Constants.txt" , ios::app);
+    OutPutParam(param);
+
 	cout.precision(12);
 	/*{
 		TestRunner tr;
