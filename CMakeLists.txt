@@ -3,7 +3,7 @@ project(BlockTemp_Ilgiz)
 
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(BlockTemp_Ilgiz
+add_executable(BlockTemp
         main.cpp
         mylibr.h
         EasyAxisEnergy.cpp EasyAxisEnergy.h

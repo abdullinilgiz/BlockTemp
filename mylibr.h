@@ -29,9 +29,9 @@ struct Particle {
 
 double DotP(Particle l, Particle r);
 
-const string Today = "20.09.21";
+const string Today = "27.09.21";
 
-const int Nstep = 800; // should be divisible by 5 and 4
+const int Nstep = 1600; // should be divisible by 5 and 4
 
 const double PI = 3.141592653589793;
 
@@ -39,7 +39,7 @@ const double kB = 1.3806503e-23;
 
 const double Rcore = 6e-9; // radius
 
-const double Tshell = 5e-9; // tolshina obolochki
+const double Tshell = 5e-9; // tolshina obolochki `
 
 const int iSeed = 13; // for randomc
 
