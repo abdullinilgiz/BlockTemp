@@ -28,9 +28,9 @@ struct Particle {
 
 double DotP(Particle l, Particle r);
 
-const string Today = "20.09.21_old";
+const string Today = "27.09.21_old";
 
-const int Nstep = 800; // should be divisible by 5 and 4
+const int Nstep = 1600; // should be divisible by 5 and 4
 
 const double PI = 3.141592653589793;
 

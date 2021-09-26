@@ -124,7 +124,6 @@ int main() {
 			 
 		ofstream stream;
 		stream.open(date + "_" + marker + ".txt" , ios::app);
-		OutPutParam(stream);
 
 		int decreaser = 4;
 		int down_up = 2;
@@ -240,7 +239,7 @@ int main() {
 					if (decreaser == 1) {
 						convergence << Temper << " " << index1 << " "
 							 << sqrt(DotP(sys_moment, sys_moment)) << '\n';
-						if (Nstep - Nstep / 5 <= index1) {
+						if (Nstep - Nstep / 3 <= index1) {
 							sys_moment_vector.push_back(sys_moment);
 						}
 					}
@@ -269,6 +268,7 @@ int main() {
 				cout << "Koef: " << static_cast<double>(total_apply_counter) / Nstep / Nstep / decreaser << '\n';
 				cout << " .*.*.*.*.*.*.*.*.*. " << endl;
 
+                sys_moment_vector.clear();
 			}
 			dT *= -1;
  			Temper = Tmin;
