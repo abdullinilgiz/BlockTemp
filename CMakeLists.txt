@@ -14,3 +14,15 @@ add_executable(BlockTemp
         Moments.cpp Moments.h
         MonteCarlo.cpp MonteCarlo.h
         operations.cpp operations.h)
+
+add_executable(BlockTemp_SecThread
+        main.cpp
+        mylibr.h
+        EasyAxisEnergy.cpp EasyAxisEnergy.h
+        ExternalEnergy.cpp ExternalEnergy.h
+        InteractionEnergy.cpp InteractionEnergy.h
+        mersenne.cpp randomc.h
+        test_runner.h Tests.cpp
+        Moments.cpp Moments.h
+        MonteCarlo.cpp MonteCarlo.h
+        operations.cpp operations.h)
