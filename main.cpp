@@ -231,7 +231,7 @@ int main() {
 					if (decreaser == 1) {
 						convergence << Temper << " " << index1 << " "
 							 << sqrt(DotP(sys_moment, sys_moment)) << '\n';
-						if (Nstep - Nstep / 3 <= index1) {
+						if (Nstep - Nstep / 5 <= index1) {
 							sys_moment_vector.push_back(sys_moment);
 						}
 					}
