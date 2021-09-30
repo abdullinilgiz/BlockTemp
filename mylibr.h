@@ -29,7 +29,7 @@ struct Particle {
 
 double DotP(Particle l, Particle r);
 
-const string Today = "28.09.21";
+const string Today = "30.09.21";
 
 const int Nstep = 3000; // should be divisible by 5 and 4
 

@@ -136,6 +136,9 @@ int main() {
 			ofstream convergence;
 			convergence.open(date + "_" + marker + "_convergence" + ".txt", ios::app);
 
+            ofstream koef_stream;
+            koef_stream.open(date + "_" + marker + "_koef" + ".txt", ios::app);
+
             ofstream delta_nrg;
             delta_nrg.open(date + "_" + marker + "_delta_nrg" + ".txt", ios::app);
             delta_nrg << "Temper" << "Intr - " << "Extr - " << "Easy - " << '\n';
@@ -172,22 +175,21 @@ int main() {
 
 				for (int index1 = 0; index1 < Nstep / decreaser ; ++index1) {
 					for (int index2 = 0; index2 < Nstep; ++index2) {
-						bool flag = MKIteration(
-							Temper,
-							rg,
-							particles_easy_nrg,
-							int_nrg_matrix,
-							v_distances,
-							distances,
-							particle_moments,
-							int_sys_nrg,
-							ext_sys_nrg,
-							easy_sys_nrg,
-							full_sys_nrg,
-							phi_max,
-							easy_axis_dir,
-							E_ext);
-						if (flag) {
+						if (MKIteration(
+                                Temper,
+                                rg,
+                                particles_easy_nrg,
+                                int_nrg_matrix,
+                                v_distances,
+                                distances,
+                                particle_moments,
+                                int_sys_nrg,
+                                ext_sys_nrg,
+                                easy_sys_nrg,
+                                full_sys_nrg,
+                                phi_max,
+                                easy_axis_dir,
+                                E_ext)) {
 							apply_counter++;
 						}
 					}
@@ -224,19 +226,20 @@ int main() {
                     }
 					AngleChanger(apply_counter, phi_max);
 					total_apply_counter += apply_counter;
-					apply_counter = 0;
 
-					sys_moment = FullSysMoment(particle_moments, Nmb_particles);
+                    sys_moment = FullSysMoment(particle_moments, Nmb_particles);
 
-					if (decreaser == 1) {
-						convergence << Temper << " " << index1 << " "
+                    if (decreaser == 1) {
+                        koef_stream << static_cast<double>(apply_counter) / Nstep << " " << phi_max << '\n';
+                        convergence << Temper << " " << index1 << " "
 							 << sqrt(DotP(sys_moment, sys_moment)) << '\n';
-						if (Nstep - Nstep / 5 <= index1) {
-							sys_moment_vector.push_back(sys_moment);
-						}
-					}
-					
-				}
+                        if (Nstep - Nstep / 5 <= index1) {
+                            sys_moment_vector.push_back(sys_moment);
+                        }
+                    }
+
+                    apply_counter = 0;
+                }
 
 				cout << " ***  END NRGS" << '\n';
 				cout << "Intr: " << int_sys_nrg << '\n';
@@ -273,6 +276,7 @@ int main() {
 			decreaser = 1;
 
 			convergence.close();
+			koef_stream.close();
 			delta_nrg.close();
 		}
 		zfc_fc.close();
