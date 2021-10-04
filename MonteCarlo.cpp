@@ -22,11 +22,11 @@ bool MKIteration(
 
 	//calculate old moment energy
     const double old_int_particle_nrg = GetOneIntEnergy(int_nrg_matrix, rng_particle, Nmb_particles);
-    const double old_ext_particle_nrg = GetOneExtEnergy(particle_moments, rng_particle, E_ext);
+    const double old_ext_particle_nrg = GetOneExtEnergy(particle_moments[rng_particle], E_ext);
     const double old_easy_particle_nrg = particles_easy_nrg[rng_particle];
 
 	//save old interaction energy and external field energy
-    const double old_full_sys_nrg = int_sys_nrg + ext_sys_nrg + easy_sys_nrg;
+    //const double old_full_sys_nrg = int_sys_nrg + ext_sys_nrg + easy_sys_nrg;
 
 	//save matrix energies for random_particle_number
 	vector<double> old_particle_nrgs(Nmb_particles);
@@ -48,36 +48,32 @@ bool MKIteration(
 	}
 
 	//new moment energy
-	const double new_int_particle_nrg = IntParticleEnergy(particle_moments, int_nrg_matrix, distances, v_distances, rng_particle, Nmb_particles);
-	const double new_ext_particle_nrg = GetOneExtEnergy(particle_moments, rng_particle, E_ext);
-	const double new_easy_particle_nrg = OneEasyAxis(particle_moments, easy_axis_dir, rng_particle);
+	const double new_easy_particle_nrg = OneEasyAxis(particle_moments[rng_particle], easy_axis_dir[rng_particle]);
 
 	//new energies
-	const double new_int_sys_nrg = int_sys_nrg + new_int_particle_nrg - old_int_particle_nrg;
-	const double new_ext_sys_nrg = ext_sys_nrg + new_ext_particle_nrg - old_ext_particle_nrg;
-	const double new_easy_sys_nrg = easy_sys_nrg + new_easy_particle_nrg - old_easy_particle_nrg;
+	const double delta_int_sys_nrg =
+            IntParticleEnergy(particle_moments, int_nrg_matrix, distances, v_distances, rng_particle)
+            - old_int_particle_nrg;
+	const double delta_ext_sys_nrg = GetOneExtEnergy(particle_moments[rng_particle], E_ext)
+            - old_ext_particle_nrg;
+	const double delta_easy_sys_nrg = new_easy_particle_nrg - old_easy_particle_nrg;
 
-	const double new_full_sys_nrg = new_int_sys_nrg + new_ext_sys_nrg + new_easy_sys_nrg;
-
-	//delta energy
-	const double delta_nrg = new_full_sys_nrg - old_full_sys_nrg;
+    //delta energy
+    const double delta_full_sys_nrg = delta_int_sys_nrg + delta_ext_sys_nrg + delta_easy_sys_nrg;
 
 	//apply or not
 	double ksi = rg->Random();
-	double porog = exp(-delta_nrg / kB / Temper);
+	double porog = exp(-delta_full_sys_nrg / kB / Temper);
 	//cout << "Porog" << porog << endl;
 	if (ksi < porog) {
-		full_sys_nrg = new_full_sys_nrg;
-		int_sys_nrg = new_int_sys_nrg;
-		ext_sys_nrg =  new_ext_sys_nrg;
-		easy_sys_nrg = new_easy_sys_nrg;
-
+		full_sys_nrg += delta_full_sys_nrg;
+		int_sys_nrg += delta_int_sys_nrg;
+		ext_sys_nrg += delta_ext_sys_nrg;
+		easy_sys_nrg += delta_easy_sys_nrg;
 		particles_easy_nrg[rng_particle] = new_easy_particle_nrg;
-
 		return true;
 	}
 	else {
-		//return old moment
 		particle_moments[rng_particle].x = old_moment.x;
 		particle_moments[rng_particle].y = old_moment.y;
 		particle_moments[rng_particle].z = old_moment.z;
