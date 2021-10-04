@@ -3,12 +3,11 @@
 #include "EasyAxisEnergy.h"
 
 double OneEasyAxis(
-	const vector<Particle>& moments,
-	const vector<Particle>& particle_easy_axis, 
-	const int& index)
+	const Particle& moment,
+	const Particle& particle_easy_axis)
 {
-	double nrg = kA * Vol * (1 - pow(DotP(moments[index], particle_easy_axis[index]),2)
-		/ DotP(moments[index], moments[index]));
+	double nrg = kA * Vol * (1 - pow(DotP(moment, particle_easy_axis),2)
+		/ DotP(moment, moment));
 	return nrg;
 }
 
@@ -20,7 +19,7 @@ double EasySysEnergy(
 {
 	double nrg = 0;
 	for (int i = 0; i < nmb_of_particles; ++i) {
-		easy_nrg[i] = OneEasyAxis(moments, easy_axis_dir, i);
+		easy_nrg[i] = OneEasyAxis(moments[i], easy_axis_dir[i]);
 		nrg += easy_nrg[i];
 	}
 	return nrg; 

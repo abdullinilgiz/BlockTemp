@@ -3,9 +3,8 @@
 #include "mylibr.h"
 
 double GetOneExtEnergy(
-	const vector<Particle>& moments,
-	const int& particle_index,
-	const Particle& E_ext);
+        const Particle& moment,
+        const Particle& E_ext);
 
 double ExtSysEnergy(
 	const vector<Particle>& moments,

@@ -38,13 +38,10 @@ double IntParticleEnergy(
 	vector<vector<double>>& energy_matrix,
 	const vector<vector<double>>& distances_matrix,
 	const vector<vector<Particle>>& v_distances_matrix,
-	const int& particle_index,
-	const int& v_size) 
+	const int& particle_index)
 {
 	double energy = 0;
-	//double dis_r_v = 0;
-
-	for (int i = 0; i < v_size; ++i) {
+	for (int i = 0; i < Nmb_particles; ++i) {
 		if (i != particle_index) {
 			energy_matrix[i][particle_index] = CalculateDipol_Dipol(moments, distances_matrix,
 																		v_distances_matrix, i, particle_index);

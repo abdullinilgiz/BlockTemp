@@ -3,9 +3,8 @@
 #include "mylibr.h"
 
 double OneEasyAxis(
-	const vector<Particle>& moments,
-	const vector<Particle>& particle_easy_axis,
-	const int& index);
+	const Particle& moments,
+	const Particle& particle_easy_axis);
 
 double EasySysEnergy(
 	const vector<Particle>& moments,

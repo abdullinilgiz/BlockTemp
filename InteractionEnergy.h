@@ -14,8 +14,7 @@ double IntParticleEnergy(
 	vector<vector<double>>& energy_matrix,
 	const vector<vector<double>>& distances_matrix,
 	const vector<vector<Particle>>& v_distances_matrix,
-	const int& particle_index,
-	const int& v_size);
+	const int& particle_index);
 
 double IntSysEnergy(
 	const vector<Particle>& moments,

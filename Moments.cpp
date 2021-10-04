@@ -43,7 +43,16 @@ Particle FullSysMoment(
 	return full_moment;
 }
 
-//������� ���������� ��������� ������ ��������� �����, �.�. ���������� ��������� �����������
+Particle GetDir(const double phi, const double theta)
+{
+    Particle axis;
+    axis.x = sin(theta) * cos(phi);
+    axis.y = sin(theta) * sin(phi);
+    axis.z = cos(theta);
+
+    return axis;
+}
+
 Particle GetRandomDir(TRandomMersenne* rg)
 {
 	Particle axis;
@@ -57,8 +66,6 @@ Particle GetRandomDir(TRandomMersenne* rg)
 	return axis;
 }
 
-
-//������� ������������ ������� ������� vector �� ���� phi ������������� ��� axis
 void RotateVector(
 	Particle& vector,
 	const Particle& axis, 

@@ -8,6 +8,8 @@ Particle FullSysMoment(
 	const vector<Particle>& moments,
 	const int& v_size);
 
+Particle GetDir(const double phi, const double theta);
+
 Particle GetRandomDir(TRandomMersenne* rg);
 
 void RotateVector(
