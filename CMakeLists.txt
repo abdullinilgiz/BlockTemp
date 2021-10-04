@@ -13,7 +13,8 @@ add_executable(BlockTemp
         test_runner.h Tests.cpp
         Moments.cpp Moments.h
         MonteCarlo.cpp MonteCarlo.h
-        operations.cpp operations.h)
+        operations.cpp operations.h
+        PhiThetaSurface.cpp PhiThetaSurface.h)
 
 add_executable(BlockTemp_SecThread
         main.cpp
@@ -25,4 +26,5 @@ add_executable(BlockTemp_SecThread
         test_runner.h Tests.cpp
         Moments.cpp Moments.h
         MonteCarlo.cpp MonteCarlo.h
-        operations.cpp operations.h)
+        operations.cpp operations.h
+        PhiThetaSurface.cpp PhiThetaSurface.h)

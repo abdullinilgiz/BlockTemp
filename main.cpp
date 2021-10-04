@@ -5,6 +5,7 @@
 #include "operations.h"
 #include "randomc.h"
 #include "MonteCarlo.h"
+#include "PhiThetaSurface.h"
 #include "test_runner.h"
 
 int main() {
@@ -133,6 +134,8 @@ int main() {
 
 		for (int i3 = 0; i3 < down_up; i3++) {
 
+
+
 			ofstream convergence;
 			convergence.open(date + "_" + marker + "_convergence" + ".txt", ios::app);
 
@@ -142,6 +145,9 @@ int main() {
             ofstream delta_nrg;
             delta_nrg.open(date + "_" + marker + "_delta_nrg" + ".txt", ios::app);
             delta_nrg << "Temper" << "Intr - " << "Extr - " << "Easy - " << '\n';
+
+            PhiThetaSurface(particle_coords, v_distances, distances, particle_moments,
+                            easy_axis_dir, E_ext, marker);
 
 			for (Temper; Temper > (Tmin - 1) && Temper < (Tmax + 1); Temper += dT) {
 
@@ -190,7 +196,7 @@ int main() {
                                 phi_max,
                                 easy_axis_dir,
                                 E_ext)) {
-							apply_counter++;
+							++apply_counter;
 						}
 					}
                     {
