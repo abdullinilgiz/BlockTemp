@@ -98,9 +98,9 @@ int main() {
 	
 		//full system moment
 		Particle sys_moment = FullSysMoment(particle_moments, Nmb_particles);
-		cout << " *** " << "Sys moment" << endl;
-		cout << sys_moment.x << endl;
-		cout << sys_moment.y << endl;
+		cout << " *** " << "Sys moment" << '\n';
+		cout << sys_moment.x << '\n';
+		cout << sys_moment.y << '\n';
 		cout << sys_moment.z << endl;
 
 
@@ -142,12 +142,15 @@ int main() {
             ofstream koef_stream;
             koef_stream.open(date + "_" + marker + "_koef" + ".txt", ios::app);
 
+            ofstream moments;
+            moments.open(date + "_" + marker + "_moments" + ".txt", ios::app);
+
             ofstream delta_nrg;
             delta_nrg.open(date + "_" + marker + "_delta_nrg" + ".txt", ios::app);
             delta_nrg << "Temper" << "Intr - " << "Extr - " << "Easy - " << '\n';
 
             PhiThetaSurface(particle_coords, v_distances, distances, particle_moments,
-                            easy_axis_dir, E_ext, marker);
+                            easy_axis_dir, E_ext, marker + "_init");
 
 			for (Temper; Temper > (Tmin - 1) && Temper < (Tmax + 1); Temper += dT) {
 
@@ -199,37 +202,6 @@ int main() {
 							++apply_counter;
 						}
 					}
-                    {
-                        /*try {
-                            TestMK_interaction_nrg(int_sys_nrg,
-                                                   int_nrg_matrix,
-                                                   particle_moments,
-                                                   distances,
-                                                   v_distances,
-                                                   Nmb_particles);
-                            cerr << "TestMK_interaction_nrg" << " OK" << endl;
-                        }
-                        catch (exception & e) {
-                            cerr << "TestMK_interaction_nrg"<< " fail: " << e.what() << endl;
-                        }
-                        try{
-                            TestMK_Ext_nrg(ext_sys_nrg, particle_moments, Nmb_particles, E_ext);
-                            cerr << "TestMK_Ext_nrg" << " OK" << endl;
-                        }
-                        catch (exception & e) {
-                            cerr << "TestMK_Ext_nrg"<< " fail: " << e.what() << endl;
-                        }
-                        try{
-                            TestMK_Easy_nrg(easy_sys_nrg, particles_easy_nrg, particle_moments, easy_axis_dir, Nmb_particles);
-                            cerr << "TestMK_Easy_nrg" << " OK" << endl;
-                        }
-                        catch (exception & e) {
-                            cerr << "TestMK_Easy_nrg"<< " fail: " << e.what() << endl;
-                        }
-                        catch (...) {
-                            cerr << "Unknown exception caught" << endl;
-                        }*/
-                    }
 					AngleChanger(apply_counter, phi_max);
 					total_apply_counter += apply_counter;
 
@@ -239,22 +211,28 @@ int main() {
                         koef_stream << static_cast<double>(apply_counter) / Nstep << " " << phi_max << '\n';
                         convergence << Temper << " " << index1 << " "
 							 << sqrt(DotP(sys_moment, sys_moment)) << '\n';
+                        for (size_t id = 0; id < 1001; id += 200) {
+                            moments << id << " " << particle_moments[id] << "\n";
+                        }
                         if (Nstep - Nstep / 5 <= index1) {
                             sys_moment_vector.push_back(sys_moment);
                         }
+
                     }
+
+                    delta_nrg << Temper << " " << int_sys_nrg
+                    << " " << ext_sys_nrg << " " << easy_sys_nrg << " " << '\n';
 
                     apply_counter = 0;
                 }
 
-				cout << " ***  END NRGS" << '\n';
-				cout << "Intr: " << int_sys_nrg << '\n';
-				cout << "Extr: " << ext_sys_nrg << '\n';
-				cout << "Easy: " << easy_sys_nrg << '\n';
-				cout << "Full: " << full_sys_nrg << '\n';
-				cout << " *** " << '\n';
+                cout << " ***  END NRGS" << '\n';
+                cout << "Intr: " << int_sys_nrg << '\n';
+                cout << "Extr: " << ext_sys_nrg << '\n';
+                cout << "Easy: " << easy_sys_nrg << '\n';
+                cout << "Full: " << full_sys_nrg << '\n';
+                cout << " *** " << '\n';
 
-                delta_nrg << Temper << " " << int_sys_nrg << " " << ext_sys_nrg << " " << easy_sys_nrg << " " << '\n';
 
 				//sys_moment = FullSysMoment(particle_moments, Nmb_particles);
 				if (decreaser == 1) {
@@ -270,6 +248,10 @@ int main() {
 				cout << " .*.*.*.*.*.*.*.*.*. " << endl;
                 sys_moment_vector.clear();
 
+                if (decreaser == 1) {
+                    PhiThetaSurface(particle_coords, v_distances, distances, particle_moments,
+                                    easy_axis_dir, E_ext, marker + to_string(Temper));
+                }
 			}
 			dT *= -1;
  			Temper = Tmin;
@@ -284,6 +266,7 @@ int main() {
 			convergence.close();
 			koef_stream.close();
 			delta_nrg.close();
+			moments.close();
 		}
 		zfc_fc.close();
 		marker = "FC";
