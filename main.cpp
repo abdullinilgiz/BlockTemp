@@ -212,7 +212,7 @@ int main() {
                         convergence << Temper << " " << index1 << " "
 							 << sqrt(DotP(sys_moment, sys_moment)) << '\n';
                         for (size_t id = 0; id < 1001; id += 200) {
-                            moments << id << " " << particle_moments[id] << "\n";
+                            moments << Temper << " " << id << " " << particle_moments[id] << "\n";
                         }
                         if (Nstep - Nstep / 5 <= index1) {
                             sys_moment_vector.push_back(sys_moment);

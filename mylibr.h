@@ -29,9 +29,9 @@ struct Particle {
 
 double DotP(Particle l, Particle r);
 
-const string Today = "05.10.21";
+const string Today = "27.10.21";
 
-const int Nstep = 3000; // should be divisible by 5 and 4
+const int Nstep = 5000; // should be divisible by 5 and 4
 
 const double PI = 3.141592653589793;
 
@@ -75,7 +75,7 @@ const double ShortestHalfSideLength = min(XSideLength, min(YSideLength, ZSideLen
 
 const int Tmax = 350;
 const int Tmin = 150;
-const int DeltaT = 100;
+const int DeltaT = 50;
 //const double kBT = T * kB;
 
 const int Nmb_particles = Nside_X * Nside_Y * Nside_Z;
