@@ -235,9 +235,6 @@ void OutPutParam(ostream& stream) {
     OUTPUT(stream, Nstep);
     OUTPUT(stream, Rcore);
     OUTPUT(stream, Tshell);
-    OUTPUT(stream, Nside_X);
-    OUTPUT(stream, Nside_Y);
-    OUTPUT(stream, Nside_Z);
     OUTPUT(stream, iSeed);
     OUTPUT(stream, dMoment);
     OUTPUT(stream, kA);

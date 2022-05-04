@@ -13,11 +13,6 @@ int main() {
 	string date = Today + "_kA=" + to_string(static_cast<int>(kA));
 	cout << "kA = " << kA << endl;
 
-    ofstream stream;
-    stream.open(date + "_Constants.txt" , ios::app);
-    OutPutParam(stream);
-    stream.close();
-
 	cout.precision(12);
 //	{
 //		TestRunner tr;
@@ -34,6 +29,17 @@ int main() {
 
 	//put coords inside vector
     FillVectorWithCoords(particle_coords);
+    ofstream streamp;
+    streamp.open("pressing positions.txt");
+    for (const auto& item : particle_coords){
+        streamp << item << endl;
+    }
+    streamp.close();
+
+    ofstream stream;
+    stream.open(date + "_Constants.txt" , ios::app);
+    OutPutParam(stream);
+    stream.close();
 
 	//create matrix of distances
 	Particle r_v = { 0, 0, 0 };

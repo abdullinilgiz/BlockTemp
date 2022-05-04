@@ -1,6 +1,5 @@
-#pragma once
-
 #include "InteractionEnergy.h"
+#include "operations.h"
 
 double CalculateDipol_Dipol(
 	const vector<Particle>& moments, 

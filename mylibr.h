@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef HEADER_H
-#define HEADER_H
-
 #include <cstdlib>
 #include <string>
 #include <malloc.h>
@@ -22,12 +19,10 @@
 using namespace std;
 
 struct Particle {
-	double x;
-	double y;
-	double z;
+    double x;
+    double y;
+    double z;
 };
-
-double DotP(Particle l, Particle r);
 
 const string Today = "27.10.21";
 
@@ -56,32 +51,19 @@ const double Particle_radius = (Tshell + Rcore);
 
 const double Particle_diam = 2 * Particle_radius; // find particle diameter
 
-const int Nside_X = 13; // number of particles per cube side
-const double Xstep = Particle_diam;
-const double XSideLength = Nside_X * Xstep;
-const double XHalfSideLength = XSideLength / 2.0;
+extern double XSideLength;
+extern double XHalfSideLength;
+extern double YSideLength;
+extern double YHalfSideLength;
+extern double ZSideLength;
+extern double ZHalfSideLength;
 
-const double Ystep = Particle_radius * sqrt(3.0);
-const int Nside_Y = round(XSideLength / (Ystep * (Nside_X - 1) + Particle_diam) * static_cast<int>(Nside_X));
-const double YSideLength = (Nside_Y - 1) * Ystep + Particle_diam;
-const double YHalfSideLength = YSideLength / 2.0;
-
-const double Zstep = Particle_radius * 2 * sqrt(6) / 3;
-const int Nside_Z = round(XSideLength / (Zstep * (Nside_X-1) + Particle_diam) * static_cast<int>(Nside_X));
-const double ZSideLength = (Nside_Z - 1) * Zstep + Particle_diam;
-const double ZHalfSideLength = ZSideLength / 2.0;
-
-const double ShortestHalfSideLength = min(XSideLength, min(YSideLength, ZSideLength)) / 2.0;
+extern double ShortestHalfSideLength;
 
 const int Tmax = 350;
 const int Tmin = 150;
 const int DeltaT = 50;
 //const double kBT = T * kB;
 
-const int Nmb_particles = Nside_X * Nside_Y * Nside_Z;
-
-
-
-
-#endif
+const int Nmb_particles = 11 * 11 * 11;
 

@@ -1,6 +1,6 @@
-#pragma once
-
 #include "ExternalEnergy.h"
+#include "operations.h"
+
 
 double GetOneExtEnergy(
 	const Particle& moment,

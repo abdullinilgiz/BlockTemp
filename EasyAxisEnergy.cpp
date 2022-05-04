@@ -1,6 +1,5 @@
-#pragma once
-
 #include "EasyAxisEnergy.h"
+#include "operations.h"
 
 double OneEasyAxis(
 	const Particle& moment,
