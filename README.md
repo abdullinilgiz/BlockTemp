@@ -9,3 +9,8 @@ https://drive.google.com/file/d/1l4FwXs-kWLpmR9BZCDY4pOj-TM4fzJc-/view?usp=shari
 ```
 https://github.com/abdullinilgiz/BlockTemp_graphs.git
 ```
+
+Мои контакты:
+```
+abdullinilr@gmail.com
+```
